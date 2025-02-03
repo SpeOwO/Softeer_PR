@@ -159,6 +159,7 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
+*.tgz
 *.gz
 *.jpg
 mini/
@@ -168,3 +169,8 @@ temp/
 ._.DS_Store
 **/.DS_Store
 **/._.DS_Store
+
+missions/W1
+missions/W2
+missions/W3
+missions/W4
