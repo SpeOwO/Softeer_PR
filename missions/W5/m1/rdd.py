@@ -1,4 +1,4 @@
-from pyspark.sql import SparkSession
+from pyspark.sql import SparkSession, Row
 
 year = 2022
 month = 1
@@ -38,6 +38,19 @@ print(f"Avg distance: {avg_distance}")
 
 for key, value in c1:
     print(key, value[0], value[1])
-    
-# Spark stop
+
+output_data = [
+    ("Total trips", total_trips),
+    ("Total revenue", total_revenue),
+    ("Avg distance", avg_distance)
+]
+
+total_rdd = spark.sparkContext.parallelize(output_data)
+total_df = total_rdd.toDF(["Metric", "Value"])
+total_df.write.option("header", "true").csv("hdfs://namenode:9000/output_stats.csv")
+
+date_df = spark.createDataFrame(date_rdd.map(lambda x: Row(date=x[0], count=x[1][0], revenue=x[1][1])))
+date_df.write.option("header", "true").csv("hdfs://namenode:9000/output_by_date.csv")
+
+# Stop Spark session
 spark.stop()
